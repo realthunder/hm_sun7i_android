@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/btnmkfs2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mkfs2" />
+
+    <Button
+        android:id="@+id/btnmkfs"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/mkfs" />
+
+    <Button 
+        android:id="@+id/btnfdisk"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/fdisk"
+        />
+    <Button 
+        android:id="@+id/btndd"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/dd1"
+        />
+    <ToggleButton 
+        android:id="@+id/tbtn1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textOn="@string/boot1"
+        android:textOff="@string/boot2"
+        />
+
+    <TextView
+        android:id="@+id/txtOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/notes" />
+
+    <!--  <Button 
+        android:id="@+id/dd2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dd2"
+        />
+    <Button 
+        android:id="@+id/dd3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dd3"
+        />
+    <Button 
+        android:id="@+id/dd4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dd4"
+        />-->
+
+</LinearLayout>
