@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Cubie Tools</string>
+    <string name="action_settings">Settings</string>
+    
+    <!-- Button's string -->
+    <string name="mkfs">Format SATA (ext4)</string>
+    <string name="mkfs2">Format SATA (exfat)</string>
+	<string name="fdisk">SATA partition</string>
+	<string name="dd1">Copy file system to SATA</string>
+	<string name="dd2">Copy file system to SATA</string>
+	<string name="dd3">Copy file system to SATA</string>
+	<string name="dd4">Copy file system to SATA</string>
+	<string name="boot1">Boot from SATA</string>
+	<string name="boot2">Boot from NAND</string>
+	
+	<!-- AlertDialog's string -->
+	<string name="atitle">Warning...</string>
+	<string name="msg1">All of this will remove the sata data (including the partition)!</string>
+	<string name="msg2">Success!</string>
+	<string name="msg3">Failed!</string>
+	<string name="msg4">Success!</string>
+	<string name="msg5">Failed!</string>
+	
+	<!-- ProgressDialog's string -->
+	<string name="dtitle">Waiting...</string>
+	<string name="d1body">Waiting...</string>
+	<string name="d2body">Waiting...</string>
+	<string name="d3body">Waiting...</string>
+	
+	<!-- Dialog's button string -->
+	<string name="yes">OK</string>
+	<string name="no">Cancel</string>
+	
+	<!-- Select's string -->
+	<string name="back">Return</string>
+	<string name="smsg1">Please input the partition number（1~4）</string>
+	<string name="smsg2">Please input the partition size (in MB)</string>
+	<string name="smsg3">Success!</string>
+	<string name="smsg4">Failure!</string>
+	<string name="smsg5">Sata is not found</string>
+	
+	<!-- notes's string -->
+	<string name="notes">"\n"
+	   "                        Attention:To make sure your SATA was connected before U flash disk.""\n"
+       "                        Formatting your sata and recognition by root explorer.""\n"
+	   "                        1.Click ''Format SATA (exfat)'', wait several seconds, it will point to you the succeed dialog,then booting the system.""\n"
+	   "\n"
+	   "                        How to boot from SATA?""\n"
+	   "                        1.Click ''Format SATA (ext4)'' to clean and format the sata.""\n"
+	   "                        2.Click ''SATA partition'' to partition for your EX4 file system.""\n"
+	   "                        3.Android file system default was set on the first partition, please set more than 600M for the first partition.""\n"
+	   "                        4.Click ''Copy file system to SATA'' to make the file system of board copy into SATA.""\n"
+	   "                        5.Choose system booting way ''Boot from SATA'' booting from sata, ''Boot from NAND'' booting from nand."</string>
+	
+	
+</resources>
