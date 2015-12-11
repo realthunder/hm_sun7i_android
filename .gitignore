@@ -1,0 +1,5 @@
+device/softwinner/sugar-cubieboard2/kernel
+device/softwinner/sugar-cubieboard2/modules/*
+device/softwinner/sugar-cubietruck/kernel
+device/softwinner/sugar-cubietruck/modules/*
+
