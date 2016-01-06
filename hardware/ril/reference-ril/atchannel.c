@@ -33,6 +33,23 @@
 #define LOG_TAG "AT"
 #include <utils/Log.h>
 
+#if 1 //quectel PLATFORM_VERSION >= "4.2.2"
+#ifndef LOGD
+#define LOGD ALOGD
+#endif
+#ifndef LOGE
+#define LOGE ALOGE
+#endif
+#ifndef LOGI
+#define LOGI ALOGI
+#endif
+#endif
+
+#if 1 //quectel
+#undef HAVE_ANDROID_OS
+#define USE_NP 1
+#endif
+
 #ifdef HAVE_ANDROID_OS
 /* for IOCTL's */
 #include <linux/omap_csmi.h>
@@ -49,7 +66,7 @@
 
 #define MAX_AT_RESPONSE (8 * 1024)
 #define HANDSHAKE_RETRY_COUNT 8
-#define HANDSHAKE_TIMEOUT_MSEC 250
+#define HANDSHAKE_TIMEOUT_MSEC 500 //250
 
 static pthread_t s_tid_reader;
 static int s_fd = -1;    /* fd of the AT channel */
@@ -69,7 +86,7 @@ void  AT_DUMP(const char*  prefix, const char*  buff, int  len)
 {
     if (len < 0)
         len = strlen(buff);
-    ALOGD("%.*s", len, buff);
+    LOGD("%.*s", len, buff);
 }
 #endif
 
@@ -205,9 +222,12 @@ static int isFinalResponse(const char *line)
  * SMS unsolicited response
  */
 static const char * s_smsUnsoliciteds[] = {
-    "+CMT:",
+   "+CMT:",
     "+CDS:",
     "+CBM:"
+#if 1 //quectel
+    , "+CMTI:"
+#endif
 };
 static int isSMSUnsolicited(const char *line)
 {
@@ -289,8 +309,14 @@ static void processLine(const char *line)
             }
         break;
 
+#if 1 //quectel
+        case OEM_HOOK_STRINGS:
+            addIntermediate(line);
+        break;
+  #endif
+
         default: /* this should never be reached */
-            ALOGE("Unsupported AT command type %d\n", s_type);
+            LOGE("Unsupported AT command type %d\n", s_type);
             handleUnsolicited(line);
         break;
     }
@@ -371,7 +397,7 @@ static const char *readline()
 
     while (p_eol == NULL) {
         if (0 == MAX_AT_RESPONSE - (p_read - s_ATBuffer)) {
-            ALOGE("ERROR: Input line exceeded buffer\n");
+            LOGE("ERROR: Input line exceeded buffer\n");
             /* ditch buffer and start over again */
             s_ATBufferCur = s_ATBuffer;
             *s_ATBufferCur = '\0';
@@ -398,9 +424,9 @@ static const char *readline()
         } else if (count <= 0) {
             /* read error encountered or EOF reached */
             if(count == 0) {
-                ALOGD("atchannel: EOF reached");
+                LOGD("atchannel: EOF reached");
             } else {
-                ALOGD("atchannel: read error %s", strerror(errno));
+                LOGD("atchannel: read error %s", strerror(errno));
             }
             return NULL;
         }
@@ -413,13 +439,14 @@ static const char *readline()
     s_ATBufferCur = p_eol + 1; /* this will always be <= p_read,    */
                               /* and there will be a \0 at *p_read */
 
-    ALOGD("AT< %s\n", ret);
+    LOGD("AT< %s\n", ret);
     return ret;
 }
 
 
 static void onReaderClosed()
 {
+    LOGE("%s\n", __func__);
     if (s_onReaderClosed != NULL && s_readerClosed == 0) {
 
         pthread_mutex_lock(&s_commandmutex);
@@ -494,14 +521,23 @@ static int writeline (const char *s)
     size_t cur = 0;
     size_t len = strlen(s);
     ssize_t written;
+    static char at_command[64];
 
     if (s_fd < 0 || s_readerClosed > 0) {
         return AT_ERROR_CHANNEL_CLOSED;
     }
 
-    ALOGD("AT> %s\n", s);
+    LOGD("AT> %s\n", s);
 
     AT_DUMP( ">> ", s, strlen(s) );
+
+#if 1 //Quectel send '\r' maybe fail via USB controller: Intel Corporation 7 Series/C210 Series Chipset Family USB xHCI Host Controller (rev 04)
+    if (len < (sizeof(at_command) - 1)) {
+        strcpy(at_command, s);
+        at_command[len++] = '\r';
+        s = (const char *)at_command;
+    }
+#endif
 
     /* the main string */
     while (cur < len) {
@@ -515,6 +551,12 @@ static int writeline (const char *s)
 
         cur += written;
     }
+
+#if 1 //Quectel send '\r' maybe fail via USB controller: Intel Corporation 7 Series/C210 Series Chipset Family USB xHCI Host Controller (rev 04)
+    if (s == (const char *)at_command) {
+        return 0;
+    }
+#endif
 
     /* the \r  */
 
@@ -538,7 +580,7 @@ static int writeCtrlZ (const char *s)
         return AT_ERROR_CHANNEL_CLOSED;
     }
 
-    ALOGD("AT> %s^Z\n", s);
+    LOGD("AT> %s^Z\n", s);
 
     AT_DUMP( ">* ", s, strlen(s) );
 
@@ -597,7 +639,7 @@ int at_open(int fd, ATUnsolHandler h)
     s_responsePrefix = NULL;
     s_smsPDU = NULL;
     sp_response = NULL;
-
+    
     /* Android power control ioctl */
 #ifdef HAVE_ANDROID_OS
 #ifdef OMAP_CSMI_POWER_CONTROL
@@ -638,6 +680,7 @@ int at_open(int fd, ATUnsolHandler h)
     ret = pthread_create(&s_tid_reader, &attr, readerLoop, &attr);
 
     if (ret < 0) {
+        LOGE("readerLoop create fail!");
         perror ("pthread_create");
         return -1;
     }
@@ -649,6 +692,7 @@ int at_open(int fd, ATUnsolHandler h)
 /* FIXME is it ok to call this from the reader and the command thread? */
 void at_close()
 {
+    LOGE("at_close");
     if (s_fd >= 0) {
         close(s_fd);
     }
@@ -718,6 +762,40 @@ static void reverseIntermediates(ATResponse *p_response)
  * timeoutMsec == 0 means infinite timeout
  */
 
+#if 1 //quectel
+#define ARRAY_SIZE(a) (sizeof(a)/sizeof(a[0]))
+
+typedef struct {
+    const char *at;
+    unsigned int timeoutSec;
+} AT_TIMEOUT_T;
+
+static const AT_TIMEOUT_T ql_at_timeout_table[] = {
+    {"AT+COPS", 180},
+    {"AT+CMGS", 30},
+};
+
+static long long ql_get_at_timeout(const char *command) {
+    size_t i;
+    char tmp[20];
+    long long timeoutMsec = 15 * 1000; //default 15s
+
+    memset(tmp, 0, sizeof(tmp));
+    strncpy(tmp, command, sizeof(tmp) - 1);
+    for (i = 0; i < strlen(tmp); i++)
+        tmp[i] = toupper(tmp[i]);
+
+     for(i = 0; i <  ARRAY_SIZE(ql_at_timeout_table); i++) {
+        if(!strncmp(tmp, ql_at_timeout_table[i].at, strlen(ql_at_timeout_table[i].at))) {
+            timeoutMsec = ql_at_timeout_table[i].timeoutSec * 1000;
+            break;
+        }
+    }  
+
+    return timeoutMsec;
+}
+#endif
+
 static int at_send_command_full_nolock (const char *command, ATCommandType type,
                     const char *responsePrefix, const char *smspdu,
                     long long timeoutMsec, ATResponse **pp_outResponse)
@@ -726,6 +804,13 @@ static int at_send_command_full_nolock (const char *command, ATCommandType type,
 #ifndef USE_NP
     struct timespec ts;
 #endif /*USE_NP*/
+
+//joe
+#if 1 //quectel // AT_TIMEOUT_LVL
+    if(timeoutMsec == 0) {        
+        timeoutMsec = ql_get_at_timeout(command);
+    }
+#endif
 
     if(sp_response != NULL) {
         err = AT_ERROR_COMMAND_PENDING;
@@ -920,7 +1005,6 @@ int at_send_command_multiline (const char *command,
 
     return err;
 }
-
 
 /** This callback is invoked on the command thread */
 void at_set_on_timeout(void (*onTimeout)(void))

@@ -16,9 +16,17 @@ PRODUCT_COPY_FILES += \
 	device/softwinner/sugar-cubieaio/recovery.fstab:recovery.fstab \
 	frameworks/base/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
 
+#add by Andy
+PRODUCT_COPY_FILES += \
+	device/softwinner/sugar-cubieaio/geek.sh:system/bin/geek.sh
+
+#PRODUCT_COPY_FILES += \
+         hardware/ril/reference-ril/init.gprs-pppd:system/etc/init.gprs-pppd:system \
+         hardware/ril/reference-ril/ip-down:system/etc/ppp/ip-down  \
+         hardware/ril/reference-ril/ip-up:system/etc/ppp/ip-up  \
+
 PRODUCT_COPY_FILES += \
 	device/softwinner/sugar-cubieaio/ueventd.sun7i.rc:root/ueventd.sun7i.rc \
-	device/softwinner/sugar-cubieaio/ct-test.apk:system/app/ct-test.apk \
 	device/softwinner/sugar-cubieaio/init.sun7i.rc:root/init.sun7i.rc \
 	device/softwinner/sugar-cubieaio/init.sun7i.usb.rc:root/init.sun7i.usb.rc \
 	device/softwinner/sugar-cubieaio/init/init.sda.rc:root/init.sda.rc \
@@ -51,19 +59,9 @@ PRODUCT_PACKAGES += \
 	Bluetooth
 #	TSCalibration2
 
+#Test APK
 PRODUCT_PACKAGES += \
-	ip-up-ppp0 \
-	chat \
-	Stk \
-	rild \
-	pppd \
-	ip-down-ppp0
-PRODUCT_COPY_FILES += \
-	device/third_part/zte/init.gprs-pppd:system/etc/init.gprs-pppd \
-	device/third_part/zte/ip-up-ppp0:system/etc/ppp/ip-up-ppp0 \
-	device/third_part/zte/chat:system/bin/chat \
-	device/third_part/zte/ip-down-ppp0:system/etc/ppp/ip-down-ppp0 \
-	device/third_part/zte/libreference-ril.so:system/lib/libreference-ril.so
+        SoundRecorder
 
 # wifi & bt config file
 PRODUCT_COPY_FILES += \

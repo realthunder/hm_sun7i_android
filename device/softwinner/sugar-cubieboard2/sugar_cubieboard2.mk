@@ -17,7 +17,6 @@ PRODUCT_COPY_FILES += \
 	frameworks/base/data/etc/android.hardware.wifi.direct.xml:system/etc/permissions/android.hardware.wifi.direct.xml \
 
 PRODUCT_COPY_FILES += \
-	device/softwinner/sugar-cubieboard2/cb2-test.apk:system/app/cb2-test.apk \
 	device/softwinner/sugar-cubieboard2/ueventd.sun7i.rc:root/ueventd.sun7i.rc \
 	device/softwinner/sugar-cubieboard2/init.sun7i.rc:root/init.sun7i.rc \
 	device/softwinner/sugar-cubieboard2/init.sun7i.usb.rc:root/init.sun7i.usb.rc \
