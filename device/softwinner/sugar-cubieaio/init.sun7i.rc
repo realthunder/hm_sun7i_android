@@ -105,7 +105,7 @@ on post-fs-data
     insmod /system/vendor/modules/switch_headset_sunxi.ko
 
 #pl2303.ko
-#    insmod /system/vendor/modules/pl2303.ko
+    insmod /system/vendor/modules/pl2303.ko
 
 #bluetooth
 	chmod 0660 /dev/ttyS2
@@ -201,7 +201,7 @@ service p2p_supplicant /system/bin/wpa_supplicant \
 #    user root
 #    group radio cache inet misc audio sdcard_rw log
 
-service ril-daemon /system/bin/rild -l /system/lib/libreference-ril.so
+service ril-daemon /system/bin/rild -l /system/lib/libreference-ril.so -- -d /dev/ttyUSB3 -u /dev/ttyUSB4
     class main
     socket rild stream 660 root radio
     socket rild-debug stream 666 radio system
