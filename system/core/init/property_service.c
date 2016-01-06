@@ -65,7 +65,6 @@ struct {
 } property_perms[] = {
     { "net.rmnet0.",      AID_RADIO,    0 },
     { "net.gprs.",        AID_RADIO,    0 },
-    { "net.ppp0.",        AID_RADIO,    0 },
     { "net.ppp",          AID_RADIO,    0 },
     { "net.qmi",          AID_RADIO,    0 },
     { "ril.pcui",	      AID_RADIO,    0 },
@@ -113,7 +112,8 @@ struct {
     unsigned int uid;
     unsigned int gid;
 } control_perms[] = {
-    {"pppd_gprs", AID_RADIO, AID_LOG },
+    { "dumpstate",AID_SHELL, AID_LOG },
+    { "ril-daemon",AID_RADIO, AID_RADIO },
      {NULL, 0, 0 }
 };
 

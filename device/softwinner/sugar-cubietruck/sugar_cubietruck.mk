@@ -18,7 +18,6 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_COPY_FILES += \
 	device/softwinner/sugar-cubietruck/ueventd.sun7i.rc:root/ueventd.sun7i.rc \
-	device/softwinner/sugar-cubietruck/ct-test.apk:system/app/ct-test.apk \
 	device/softwinner/sugar-cubietruck/init.sun7i.rc:root/init.sun7i.rc \
 	device/softwinner/sugar-cubietruck/init.sun7i.usb.rc:root/init.sun7i.usb.rc \
 	device/softwinner/sugar-cubietruck/init/init.sda.rc:root/init.sda.rc \

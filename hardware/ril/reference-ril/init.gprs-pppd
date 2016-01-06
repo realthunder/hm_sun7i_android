@@ -1,0 +1,14 @@
+#!/system/bin/sh
+
+PPPD_PID=
+
+/system/bin/setprop "net.gprs.ppp-exit" ""
+/system/bin/log -t pppd "pppd call gsm"
+/system/bin/pppd call wcdma
+
+PPPD_EXIT=$?
+PPPD_PID=$!
+
+/system/bin/log -t pppd "pppd exited with $PPPD_EXIT"
+
+/system/bin/setprop "net.gprs.ppp-exit" "$PPPD_EXIT"
