@@ -26,3 +26,4 @@ key 72   PROG_BLUE          WAKE
 key 2    PROG_GREEN         WAKE
 key 6    PROG_YELLOW        WAKE
 key 4    MOUSE              WAKE
+key 30   DEL                WAKE
