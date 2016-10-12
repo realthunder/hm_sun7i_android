@@ -1,0 +1,9 @@
+#!/system/bin/busybox sh
+
+case "$1" in
+  start)
+    insmod /system/vendor/modules/psmouse.ko finger_high=60 finger_low=50 finger_min=40
+    insmod /system/vendor/modules/sunxi-ps2.ko
+esac
+
+exit 0

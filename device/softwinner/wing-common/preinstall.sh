@@ -38,5 +38,8 @@ else
 	echo "do nothing"
 fi
 
+[ -d /system/etc/init.d ] && \
+    /system/bin/logwrapper $BUSYBOX run-parts -a start /system/etc/init.d
+  
 umount /bootloader
 rmdir /bootloader

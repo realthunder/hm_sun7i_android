@@ -84,6 +84,9 @@ PRODUCT_COPY_FILES += \
 	hardware/broadcom/wlan/firmware/ap6210/bcm20710a1.hcd:system/vendor/modules/bcm20710a1.hcd \
 	hardware/broadcom/wlan/firmware/ap6210/bd_addr.txt:system/etc/firmware/bd_addr.txt
 
+# init.d support
+PRODUCT_COPY_FILES += \
+	$(call find-copy-subdir-files,*,$(LOCAL_PATH)/init.d,system/etc/init.d) \
 	
 PRODUCT_PROPERTY_OVERRIDES += \
 	dalvik.vm.heapsize=256m \

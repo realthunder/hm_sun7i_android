@@ -1,0 +1,64 @@
+#!/system/bin/busybox sh
+
+BUSYBOX=/system/bin/busybox
+NAME=Dropbear
+DESC="SSH server"
+DAEMON=/system/xbin/dropbear
+DHOME=/data/dropbear
+OPTIONS="-s -H $DHOME -d $DHOME/dropbear_dss_host_key -r $DHOME/dropbear_rsa_host_key"
+PIDFILE=$DHOME/dropbear.pid
+
+case "$1" in
+  start)
+    # We need rsa and dss host key file to start dropbear.
+    if [ ! -d $DHOME ]; then
+        mkdir -p $DHOME
+        $BUSYBOX chmod 755 $DHOME
+        [ -d /sdcard/dropbear.bak ] &&
+            cp -a /sdcard/dropbear.bak/* $DHOME/
+        [ -d /sdcard/dropbear.bak/.ssh ] &&
+            cp -a /sdcard/dropbear.bak/.ssh $DHOME/
+        mkdir -p $DHOME/.ssh
+        $BUSYBOX touch $DHOME/.ssh/authorized_keys
+        $BUSYBOX chmod 700 $DHOME/.ssh
+        $BUSYBOX chown root: $DHOME/.ssh/authorized_keys
+        $BUSYBOX chmod 600 $DHOME/.ssh/authorized_keys
+    fi
+    if [ ! -f $DHOME/dropbear_rsa_host_key ] ; then
+        echo "Generating $NAME rsa key... "
+        dropbearkey -t rsa -f $DHOME/dropbear_rsa_host_key
+    fi
+    if [ ! -f $DHOME/dropbear_dss_host_key ] ; then
+        echo "Generating $NAME dss key... "
+        dropbearkey -t dss -f $DHOME/dropbear_dss_host_key
+    fi
+    echo "Starting $DESC: $NAME... "
+    $DAEMON $OPTIONS
+    ;;
+  stop)
+    $BUSYBOX killall dropbear
+    ;;
+  restart)
+    echo "Restarting $DESC: $NAME... "
+    $BUSYBOX killall dropbear
+    sleep 2
+    $DAEMON $OPTIONS
+    ;;
+  status)
+    if [ -f $PIDFILE ]; then
+    echo "$NAME is running."
+    exit 0
+    else
+        echo "$NAME not running."
+        exit 1
+    fi
+  ;;
+  *)
+    echo "Unknown cmd $1"
+    echo -e "\033[1mUsage:\033[0m /etc/init.d/`$BUSYBOX basename $0` [start|stop|restart|status]"
+    echo ""
+    exit 1
+    ;;
+esac
+
+exit 0

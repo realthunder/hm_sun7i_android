@@ -175,6 +175,7 @@ static struct fs_path_config android_dirs[] = {
     { 00755, AID_ROOT,   AID_SHELL,  "system/vendor" },
     { 00755, AID_ROOT,   AID_SHELL,  "system/xbin" },
     { 00755, AID_ROOT,   AID_ROOT,   "system/etc/ppp" },
+    { 00755, AID_ROOT,   AID_ROOT,   "system/etc/init.d" },
     { 00777, AID_ROOT,   AID_ROOT,   "sdcard" },
     { 00755, AID_ROOT,   AID_ROOT,   0 },
 };
@@ -221,6 +222,7 @@ static struct fs_path_config android_files[] = {
     { 00755, AID_ROOT,      AID_SHELL,     "system/xbin/*" },
     { 00755, AID_ROOT,      AID_SHELL,     "system/vendor/bin/*" },
     { 00750, AID_ROOT,      AID_SHELL,     "sbin/*" },
+    { 00755, AID_ROOT,      AID_ROOT,      "system/etc/init.d/*" },
     { 00755, AID_ROOT,      AID_ROOT,      "bin/*" },
     { 00750, AID_ROOT,      AID_SHELL,     "init*" },
     { 00750, AID_ROOT,      AID_SHELL,     "charger*" },
