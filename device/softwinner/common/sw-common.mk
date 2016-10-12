@@ -40,3 +40,11 @@ PRODUCT_COPY_FILES += \
 # NFS Support File
 PRODUCT_COPY_FILES += \
 	device/softwinner/common/bin/nfsprobe:system/bin/nfsprobe
+
+# Dropbear File
+PRODUCT_COPY_FILES += \
+	device/softwinner/common/bin/dropbear:system/xbin/dropbear \
+	device/softwinner/common/bin/dropbearkey:system/xbin/dropbearkey \
+	device/softwinner/common/bin/scp:system/xbin/scp \
+	device/softwinner/common/bin/ssh:system/xbin/ssh
+
