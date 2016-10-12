@@ -36,6 +36,7 @@ PRODUCT_COPY_FILES += \
 	device/softwinner/sugar-einstein/sw-keyboard.kl:system/usr/keylayout/sw-keyboard.kl \
 	device/softwinner/sugar-einstein/sun7i-ir.kl:system/usr/keylayout/sun7i-ir.kl \
 	device/softwinner/sugar-einstein/tp.idc:system/usr/idc/tp.idc \
+	device/softwinner/sugar-einstein/SynPS_2_Synaptics_TouchPad.idc:system/usr/idc/SynPS_2_Synaptics_TouchPad.idc \
 	device/softwinner/sugar-einstein/gsensor.cfg:system/usr/gsensor.cfg
 
 PRODUCT_COPY_FILES += \
